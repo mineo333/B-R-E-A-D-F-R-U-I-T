@@ -1,0 +1,964 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{amsmath}
+
+\title{B R E A D F R U I T: Calculus Edition}
+\author{Contributors: Sharad Khanna}
+\date{June 2019}
+%https://www.overleaf.com/learn/latex/Pgfplots_package
+\begin{document}
+\maketitle
+\begin{center}
+    \section{Introduction}
+\end{center}
+Note:  This is based off of this year's "Stupidly Useful Document" for Calculus: https://bit.ly/2ICJfIE
+\newline
+\newline
+\begin{center}TODO\end{center}
+2. Add $sin(x)/x$ and $1-cos(x)/x$ and their proofs. This should be able to fit in the squeeze theorem section and satisfy TODO 1
+\newline
+3. Add proofs for sum, difference, and constant-multiple rules (You should be able to prove them in one proof) - Page 14
+\newline
+5. Add proofs from Hardy Book - Check Discord
+\newline
+7. Fix the implicit differentiation for $ln(x)$
+\newline
+8. On Line 787 there is a massive paragraph in which I present assertion and I eventually kind of disprove it. Need to add reasoning to disprove it.
+\newline
+9. Create Cheat Sheet: Line 826
+\newline
+\newpage
+\begin{center}
+    \textbf{Notes that don't fit anywhere else (Will be confusing if you are not in the right place)}
+\end{center}
+On the notation or $\frac{d}{dx}$
+\newline
+$\frac{d}{dx}$, in my honest opinion, is very confusing. I didn't really understand it until half way through this paper. It seems very easy with regular derivatives as it is just shorthand at first, but when we reach implicit differentiation it becomes quite confusing. So, what it truly is is an operator. A similar thing in mathematics would be absolute value $|x|$ only applies to the $x$ another nothing else. This is the case with $\frac{d}{dx}$ it only applies to what it it is applied to. For example if we attempt to differentiate the function $f(x) = 3x^2$ what we can do is $\frac{d}{dx}f(x) = \frac{d}{dx}[3x^2]$. This results in $\frac{df}{dx} = 6x$. So, if this confuses you try to think about it like applying the $\frac{d}{dx}$ to everything much like an operator.
+\newline
+\newline
+On "differentiating with respect to 'some variable'"
+\newline
+This one is a bit related to the one above. When you differentiate with respect to something you are adding it on the denominator of the $\frac{d}{dx}$ operator.
+\newpage
+\begin{center}
+    \section{Continuity and Limits}
+\end{center}
+At the core, calculus is simply a study of rates of change. Because of this, continuity plays a crucial role in calculus. To represent this continuity we use limits. So, what are limits? Why do they exist? How do we write them? Those are questions we will be answering in this unit.
+\newline
+\newline
+To start this study let us take a look at the simplest graph $y = x$.
+\begin{center}
+$
+\begin{tikzpicture}
+\begin{axis}[
+    ymin=-5,
+    ymax=5,
+    xmin=-10.1,
+    xmax=10.1,
+    axis on top=true,
+    axis x line=middle,
+    axis y line=middle,
+    ]
+    \addplot [samples=100, domain=-10:10] {x};
+    \end{axis}
+\end{tikzpicture}  
+  $  
+\end{center}
+So, what is the domain of $y = x$? The domain is $(-\infty, \infty)$. Because of that we automatically know that the graph is completely continuous because there are no places it stops. This is also seen in the graph because there are no discontinuities. So, what is a function with a discontinuity? An example of this could be a graph such as $\frac{1}{x}$. In this function, the domain is $(-\infty, 0) U (0,\infty)$. Lets take a look at the graph.
+\begin{center}
+$
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = center,
+    xlabel = $x$,
+    ylabel = {$f(x)$},
+]
+%Below the red parabola is defined
+\addplot [
+    domain=-10:10, 
+    samples=100, 
+    color=black
+]
+{1/x};
+
+\addlegendentry{$\frac{1}{x}$}
+\end{axis}
+\end{tikzpicture}
+  $  
+
+\end{center}
+So, as you can see from this graph this an asymptote at $x=0$. Therefore, it is not continuous as the graph is effectively split into 2 sections and those 2 sections are not connected with each other. So, now that we have found this \textbf{asymptotic discontinuity}, what about others? Well, lets take a look at another. The next one can only be found in a set of piecewise equations. So, to find this discontinuity lets take a look at this set of equations:
+
+\begin{center}
+    \[   \left\{
+\begin{array}{ll}
+      0 & -\infty < x \leq 1 \\
+      1 & 1 < x < \infty \\
+\end{array} 
+\right. \]
+\end{center}
+So, now that we have the equations lets make the graph.
+\begin{center}
+$
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = center,
+    xlabel = $x$,
+    ylabel = {$f(x)$},
+]
+%Below the red parabola is defined
+\addplot [
+    domain=-10:1, 
+    samples=100, 
+    color=blue
+]
+{0};
+\addplot [
+    domain=1:10, 
+    samples=100, 
+    color=red
+]
+{1};
+\addlegendentry{0}
+\addlegendentry{1}
+\end{axis}
+\end{tikzpicture}
+  $  
+
+\end{center}
+Note: At the beginning of $y=1$ there is a hole
+\newline
+\newline
+So, as you can see it is definitely not continuous. On, this graph there is a sort of "jump" from 0 to 1 without any actual connection. Therefore, we call it a \textbf{Jump Discontinuity} However, what is still important to understand is that the domain is in fact still $(-\infty, \infty)$.
+\newline
+\newline
+If you want a graph with a natural jump discontinuity there is $\frac{|x|}{x}$ which you can graph on your own.
+\newline
+So, what other types of discontinuities can we have? Well there is one more. 
+\newline
+\newline
+The last discontinuity that we can face is a removable discontinuity or more commonly known as a "hole". Lets take a look at a graph with a hole.
+\begin{center}
+    $
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = center,
+    xlabel = $x$,
+    ylabel = {$f(x)$},
+]
+%Below the red parabola is defined
+\addplot [
+    domain=-10:1, 
+    samples=100, 
+    color=black
+]
+{x};
+\addplot [
+    domain=2:10, 
+    samples=100, 
+    color=black
+]
+{x};
+\addlegendentry{x}
+\end{axis}
+\end{tikzpicture}
+  $  
+\end{center}
+So, as you can see the graph is not a jump because it is not really jumping up and down into a different graph. It is not an asymptotic because there is no asymptote. So, it is a hole/removable because if you add that missing section of the graph again you will get a full, continuous $y=x$.
+\begin{center}
+    \textbf{Review}
+\end{center}
+So, what have we figured out so far? Well, we have figured out that there are 3 types of discontinuities that can exist in graphs:
+\newline
+\newline 
+1. Asymptotic
+\newline
+\newline
+2. Jump
+\newline
+\newline
+3. Removable/Hole
+\newline
+\newline
+Now... To Limits!
+\begin{center}
+    \textbf{Limits}
+\end{center}
+So, what are limits. At its core limits are used to represent what a graph y value a function approaches when it approaches its given x value. So, what do I mean by this. Well lets go back to our hole graph above. Lets say the domain is $(-\infty, 1) U (1, \infty)$. So, in this graph $f(1)$ is undefined obviously. However, what is the value $f(x)$ approaches as $x$ approaches $1$. Or, in other words, what value is $f(x)$ as $x$ gets infinitely close but not touches one. (If you are having trouble visualizing this think about like doing $f(0.9999999999999999999999)$ effectively one but because of that extremely tiny difference it is still defined). That value is 1. Limits can be used for any value. So, if the x value is defined in the graph then $f(x) = $ limit of x. So how do we represent this in "limit" notation?
+\newline
+\newline
+$\lim_{x\to \text{an x value}} f(x)$ a y value 
+\newline
+\newline
+So, for our example above the limit notation would be $\lim_{x\to1} f(x)$ $\to1$.
+\newline
+\newline
+Although this is cool and all, what about something like our jump discontinuity graph where our discontinuity at $1$ has a different value if you approach from the right or the left? This is where left and right limits come into play. A left limit is what it approaches what value it approaches from the left and a right limit is what value it approaches from the right. Here is the notation for both left and right:
+\newline
+\newline
+\textbf{Left}: $\lim_{x^-\to \text{an x value}} f(x)$ a y value 
+\newline
+\newline
+\textbf{Right}: $\lim_{x^+\to \text{an x value}} f(x)$ a y value
+\newline
+\newline
+There is also the 2-sided limit which is what value it approaches from both side. This may not exist. For it to exist the left and right limits must be equivalent (Such as in the removable/hole discontinuity graph). For the 2-sided limit the notation is the same as our original. notation.
+\newline
+\newline
+To explore this left and right limit notation dilemma lets take a look at the jump discontinuity graph. In the jump discontinuity graph these are the limits:
+\newline
+\newline
+\textbf{Left}: $\lim_{x^-\to1} f(x)$ $\to0$
+\newline
+\newline
+\textbf{Right}: $\lim_{x^+\to1} f(x)$ $\to1$
+\newline
+\newline
+The 2-sided limit does not exist because the left and right limits are not equivalent. This same phenomenon can be seen with the asymptotic where the limits are:
+\newline
+\newline
+\textbf{Left}: $\lim_{x^-\to0} f(x)$ $\to-\infty$
+\newline
+\newline
+\textbf{Right}: $\lim_{x^+\to0} f(x)$ $\to\infty$
+\newline
+\newline
+In this graph again the 2 sided limit does not exist because the right and left limits are not equivalent.
+\begin{center}
+    \textbf{Limit Rules}
+\end{center}
+If I told you to do $\lim_{x\to0} \frac{1}{x}$ without a graph it would a little difficult because if you directly plug in $0$ into $\frac{1}{x}$ it would be undefined, and if you try to plug in $0.000000001$ it would be a slightly difficult computation. This is where limit rules. We have the ability to manipulate limits. To figure out these manipulations lets take a look at the function $2x+6$.
+\newline
+\newline
+Because limits are effectively the same as substituting into $f(x)$ except with approaching instead of direct substitution we can easily say that the rules of limit manipulation are the exact same as function manipulation. So:
+\newline
+\newline
+$\lim_{x\to y} 2x\pm6 = \lim_{x\to y} 2x \pm \lim_{x\to y} 6 = 2\lim_{x\to y} x\pm3$
+\newline
+\newline
+$\lim_{x\to y} (x+3)(x+2) = \lim_{x\to y} (x+3) * \lim_{x\to y} (x+2)$
+\newline
+\newline
+$\lim_{x\to y} \frac{x+2}{x+3} = \frac{\lim_{x\to y} (x+2)}{\lim_{x\to y} (x+3)}$
+\newline
+\begin{center}
+    Epsilon-Delta Definition of a Limit
+\end{center}
+Now before I move on I want to discuss the true definition of a limit. This is known as the epsilon-delta definition and serves as a way to solidify a definition instead of giving the definition of "going up really close"
+\newline
+\newline
+Let's present the following assertion: $lim_{x \to a} f(x) = L$ is true if for every $\varepsilon > 0$ there is a corresponding $\delta>0$ such that if  $0<|x-a| < \delta$ then $|f(x) - L| < \varepsilon$
+\newline
+\newline
+So, now what you may be thinking is: What are all these symbols?. That's a fair response. So, what this the definitions saying is that if you give me any $\varepsilon$, $a$, and $L$ I will be able to find what $\delta$ is and  prove the limit. So, what this actually means is that $L$, which is what the limit is actually equal to can be subtracted to and added to by a given $\varepsilon$. And, because a limit is really just approaching it needs to be continuous up to that $L$, going through the range provided by $\varepsilon$. If this is satisfied then using $\varepsilon$ and the inequalities above, I should easily be able to provide a range of $\delta$ which covers the points detailed by the range provided by $\varepsilon$. This will therefore prove that the points going up to $L$ are continuous and that the limit does in fact exist. 
+\newline
+\newline
+Note: The Delta-Epsilon definition is not used for solving limits but rather proving they exist. 
+\begin{center} 
+    \textbf{Squeeze Theorem or The Two Policeman and A Drunk Theorem}
+\end{center}
+Squeeze theorem is very simple:
+If we have functions $f(x)$, $g(x)$, and $h(x)$ and$f(x)$ and $g(x)$ effectively "squeeze" $h(x)$ ($f(x) \leq h(x) \leq g(x)$) then if $\lim_{x\to y} f(x) = A and \lim_{x\to y} g(x) = A$ then $\lim_{x\to y} h(x) = A$.
+\newline
+\newline
+So, what does squeeze mean? To understand this let's take a look at the theorem definition.
+\newline
+\newline
+The theorem definition says that $\lim_{x\to y} f(x) = A and \lim_{x\to y} g(x) = A$. This would mean that $f(x)$ and $g(x)$ intersect (or seem to intersect) at $x$. Also, due to the 3rd statement: $\lim_{x\to y} h(x) = A$ we understand that $h(x)$ must intersect (or seem to intersect) both $f(x)$ and $g(x)$ at $x$. So, why does this work?
+\newline
+\newline
+Lets break this theorem down further to understand it more. With the statement $f(x) \leq h(x) \leq g(x)$ we know for a fact that $h(x)$ is somewhere between $f(x)$ and $g(x)$. The next statement, $\lim_{x\to y} f(x) = A and \lim_{x\to y} g(x) = A$ ensures that the functions $f(x)$ and $g(x)$ are in fact touching or very close to each other. This brings the "sandwich" from statement 1 to a very small distance. This ensures that $\lim_{x\to y} h(x) = A$ will be found in that new sandwich. Here is an analogy. Suppose we have a burger and we are trying to find a single tomato. And to find the tomato, we remove everything except the tomato making the burger extremely small with only the tomato remaining giving us the tomato. That is (slightly) similar to what we are doing here.
+\newline
+\newline
+So, let's do some problems.
+\newline
+\newline
+Problem 1: $\lim_{x\to 0} \frac{sin(x)}{x}$
+\newline
+First we need to find 2 functions that are greater and less than $\frac{sin(x)}{x}$ and their limits approaching $x=0$ is also the same. This function happens to be $-x^2+1$ and $x^2+1$. Here is it graphed:
+\begin{center}
+    $
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = center,
+    xlabel = $x$,
+    ylabel = {$f(x)$},
+    ymin=-10,
+    ymax=10,
+    trig format plots=rad
+]
+%Below the red parabola is defined
+\addplot [
+    domain=-10:10, 
+    samples=100, 
+    color=black
+]
+{sin(x)/x};
+\addplot [
+    domain=-10:10, 
+    samples=100, 
+    color=blue
+]
+{-x^2+1};
+\addplot [
+    domain=-10:10, 
+    samples=100, 
+    color=blue
+]
+{x^2+1};
+\end{axis}
+\end{tikzpicture}
+  $  
+\end{center}
+As you can see from the graph, $\frac{sin(x)}{x}$ has been sandwiched between $\pm x^2+1$. Using this sandwich we are able to derive that $\lim_{x\to 0} \frac{sin(x)}{x}$ is in fact $1$.
+\newline
+\newline
+Now, what is important to understand is that squeeze theorem is not a viable way to solve problems. It seems like it could be, but as you do more and more problems you will find that it is terribly difficult to find the 2 equations.
+\begin{center}
+    \textbf{Intermediate Value Theorem}
+\end{center}
+The Intermediate Value Theorem says that in a \textbf{continuous} function if there are 2 points and between the 2 points is 0 then somewhere between these 2 points the function passed through a 0. So, take the points $(3,-3)$ and $(6,4)$. Assuming those 2 points are on a continuous function, the function passed through the x axis between $3$ and $6$.
+\begin{center}
+    \textbf{Limits to Infinity}
+\end{center}
+Although limits typically go to a concrete constant, they can sometimes also be extended to infinity. Usually, they result in limits that extend to $\pm\infty$ but sometimes, if the graph converges on a certain value, an infinity limit can go to a specific value. The primary place where this is seen is with rational functions.
+\newline
+\newline
+In rational functions, there are horizontal asymptotes. So, as the function tends to $\pm\infty$ it approaches the horizontal asymptote.
+\newline
+\newline
+To find the horizontal asymptote use the rules. So, if it is equally weighted divide the coefficients of the highest degree term on both the top and bottom of the division. If the rational function is bottom weighted then the horizontal asymptote is 0. And, if the rational function is top weighted, then there will be a slant asymptote or no asymptote which will result the rational function extending to $\pm\infty$
+\newpage
+\begin{center}
+    \section{Unit 2: Differentiation}
+\end{center}
+In this unit will be covering the important concept to the derivative and everything around it.
+\begin{center}
+    \textbf{The Derivative: The Basics}
+\end{center}
+So, what is the derivative? To understand this concept will be using the concept of velocity. So, before we begin this unit we must understand what velocity is.
+\newline
+\newline
+In Physics, velocity is simply change in distance traveled over change in time. Or, more simply, distance over time. Hence, the formula is simply $\frac{\Delta d}{\Delta t}$ or $\frac{\text{Change in Distance}}{\text{Change in Time}}$ or $\frac{d_2 - d_1}{t_2 - t_1}$.
+\newline
+\newline
+Although this velocity equation is nice and all and gives us a lot of information, it has one small problem. This velocity equation gives us only the average velocity on a journey. So, if I took a journey from DC to NYC and this formula told me that my velocity was 70 mph then that would signify that I was traveling 70 mph the entire journey which is obviously wrong. So, if I wanted to find a specific speed I was traveling at a specific instant in time I would be out of luck. This where the derivative comes in. So, how do we use the derivative to solve our problem?
+\newline
+\newline
+So, to solve this problem let's look at what I stated above. I said I wanted to find the "specific speed I was traveling at a specific instant". The keyword is \textbf{instant}. If I were to whittle that entire journey down and all the various speeds I was traveling at to one single instant I would easily arrive at my answer. So, now we know what to do. The next question is what is an instant? For our purposes an instant is simply an unimaginably short amount of time. To arrive at our next step we must ultimately look at our formula: $\frac{\Delta d}{\Delta t}$.
+\newline
+\newline
+So, earlier we stated we would arrive at our answer by simply looking at one single instant and we defined an instant as a unimaginably small amount of time. So, to achieve that we would try to make $\Delta t$ as small as possible. How do we do that? Well we use a limit. So, $\lim_{x\to 0}\Delta t$. This makes $t$ get extremely close to 0. With $t$ ever-decreasing and approaching 0, $d$ is also decreasing just as fast. Once, $t$ gets as close to 0 as physically possible we get answer in $d$. This makes the full formula for solving this kind of problem as $\lim_{x\to 0} \frac{\Delta d}{\Delta t}$. What we just solved for is known as \textbf{Instantaneous Velocity}. 
+\newline
+\newline
+Before we move on, I want to explore the concept of \textbf{Instantaneous Velocity} further. A simple question posed by many people is does Instantaneous Velocity exist? This in fact is a valid question because as I said earlier velocity is change in distance over change in time. By having the word instant you are implying that there was no change in time (As with the $\lim_{\Delta t \to 0}$). This is a question for you to debate. Both answers have solid arguments, but it is still a debate.
+\newline
+\newline
+Although we used the derivative to simply solve for the instantaneous velocity, it is also important to understand what the actual derivative and where it is used. To understand this we will again use the velocity analogy. In physics there is something known as velocity curves which details the time ($x$ axis) compared to the distance traveled ($y$ axis). An example of a velocity curve is detailed below.
+\begin{center}
+    $
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = center,
+    xlabel = $\text{Time}$,
+    ylabel = {$\text{Distance}$},
+]
+%Below the red parabola is defined
+\addplot [
+    domain=0:6, 
+    samples=100, 
+    color=black
+]
+{2^x};
+\end{axis}
+\end{tikzpicture}
+  $  
+\end{center}    
+So, why is this graph useful? And, more importantly, how can it be used to explain the derivative. To understand this we must take a look at the velocity equation: $\frac{d_2 - d_1}{t_2 - t_1}$. Now, on this graph, what would this equation represent? Well it would be slope of course! This is because it is $\frac{y_2 - y_1}{x_2 - x_1}$ except $y$ is $d$ and $x$ is $t$. So, if we were to implement our limit in this situation what would happen. So, what would happen is that the distance between the 2 times or the 2 $x$'s would tend toward 0. So, what does this mean? We have 2 distances/$y$ values over 2 time/$x$ values that are infinitely close to each other. Hence it would give us the slope at a single point. That is what the derivative is in essence: \textbf{THE SLOPE AT A SINGLE POINT}.
+\begin{center}
+    \textbf{The Derivative Definition}
+\end{center}
+Now that we have understood what the derivative is, we need to understand what the true definition of the derivative is. Because we proved that the formula in the context of the velocity graph is simply the slope formula but the x distance is approaching 0 we can easily say that the true definition of the derivative is $\lim_{h\to 0}\frac{f(x+h) -  f(x)}{x+h-x}$ or $\lim_{h\to 0}\frac{f(x+h) -  f(x)}{h}$ where $h$ represents the distance between the $x$ values in the slope function.
+\newline
+\newline
+Now, that we have understood completely what the derivative means and its general form, I would like to assert something. At the beginning of this exploration we asked the question how would we find the velocity a specific point? Well, we haven't answered that question as of yet. Well, the answer is again quite simple. When we use the aforementioned derivative formula, we get a generalized form of the derivative or, suppose, a derivative function. So, when we plug in any x value we get the slope at the specific x value. Hence, we would get the velocity.
+\newline
+\newline
+Another thing that is extremely important to discuss the how derivatives are written in mathematical language. Sometimes, you may see the term $\frac{dy}{dx}$. That is actually representing the derivative. So, why is it written like that? So, in this notation $d$ represents "difference". So, the the notation can be said to say that it is the "difference of y over the difference of x". Which does in fact line up with the derivative definition because the derivative definition is in fact the difference of y values over the difference in x values. So, if we want to take the derivative of a function we can simply write it as $\frac{dy}{dx} f(x)$. Note: there does exist a shorthand for  $\frac{dy}{dx}$ which is simply $\frac{d}{dx}$ 
+\begin{center}
+    \textbf{Differentiability}
+\end{center}
+So, differentiation and differentiability are often concepts you will hear in calculus. Although they have seemingly big and complex words they actually have very simple meanings behind them. In short, they mean to be able to take the derivative. So, as according to the definition, in this section we will talk about where it is and where it is not possible to take the derivative. 
+\newline
+\newline
+To preface this, let me make it clear that it is always possible to take the derivative if the point is continuousus. Because, the logic is relatively simple: if the point is continuous it has a slope! In this section (And in the study of differentiability) we only try to uncover the rules. To uncover these rules we will analyze a multitude of different types of functions to attempt to take the derivative. This discussion will rely heavily on knowledge learned in Unit 1.
+\newline
+\newline
+To start the discussion in differentiability let us analyze one of the most basic functions: $|x|$. Below I listed the graph.
+\begin{center}
+    $
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = center,
+    xlabel = $x$,
+    ylabel = {$f(x)$},
+    ymin=-10,
+    ymax=10,
+    trig format plots=rad
+]
+%Below the red parabola is defined
+\addplot [
+    domain=-10:0, 
+    samples=100, 
+    color=black
+]
+{-x};
+\addplot [
+    domain=0:10, 
+    samples=100, 
+    color=black
+]
+{x};
+\end{axis}
+\end{tikzpicture}
+  $  
+\end{center}
+So, how do we solve the following problem $\frac{d}{dx} |x|$. Well, I suppose a good way to start is by plugging it into the derivative portion. But, as you will soon find out it is not easy because of the duality of the absolute value function. To solve this, we take a very simple step: Convert it to a piecewise function. This results in the following piecewise function:
+\begin{center}
+    \[  f(x) = \left\{ 
+\begin{array}{ll}
+    
+      x \text{ when } x \geq 0 \\
+      -x \text{ when } x < 0 \\
+\end{array} 
+\right. \]
+\end{center}
+So, how does this help in forming the derivative? Well, we take the derivative of each of these small portions of the function and fit them with their respective domains to create a full function that represents the derivative of $f(x) = |x|$. So, why does that work exactly? The answer to this is not exactly intuitive. However, this serves as an interesting case study into what exactly is the derivative and why this works. So, again what is the  derivative. The derivative is the difference of any $f(x+h)$ and $f(x)$ divided by the difference of any $x+h$ and $x$ where $h$ is  number that is extremely small and close to $0$ but not $0$. So, when making this generalization we get a function that represents the slope at any $x$. However, when we have a piecewise function we have various functions representing a single function except each of those various functions' domain is changed such that no $x$ values overlap. So, to find the derivative of a piecewise of function all you have to do is find the derivative of each portion of the piecewise function and combine it with its original domain and then you have one complete function which represents the derivative of the $f(x)$. Another way to think about this is  by thinking about the original concept: All existing points have a derivative because every point has a slope. And, each function of the piecewise function represents a set of points and to get the derivative of that set of points you need to get the derivative of the function representing that set of points. 
+\newline
+\newline
+So, now that we understand how to take the derivative of a piecewise function we can finally do it. So, if you do the math you will find that $f'(x)$ Note ($f'$ represents the derivative of f(x)) is $\frac{|x|}{x}$ or:
+\begin{center}
+    \[  f(x) = \left\{ 
+\begin{array}{ll}
+    
+      1 \text{ when } x > 0 \\
+      -1 \text{ when } x < 0 \\
+\end{array} 
+\right. \]
+\end{center}
+Now there is a problem that exists with this that needs to be answered. This problem exists at $0$: the conjoining point. If you plug $0$ into the derivative function you will quickly find that the point does not exist because you cannot divide by zero. So, what lesson does this teach? Always be wary of point that connects 2 parts of a piecewise function.  
+\newline
+\newline
+To show why $0$ is weird try to plug it into the derivative formula:
+$\lim_{h\to 0}\frac{|0+h| -  |0|}{h}$
+\newline
+\newline
+Then solve and you get:
+$\lim_{h\to 0}\frac{|h|}{h}$
+\newline
+\newline
+And, since the limit is 2 sided you don't know if $h$ is positive or negative so the answer could be $\pm 1$. This duality makes it impossible to have one derivative. This concept is known as semi differentiability where from one side the derivative is different from the other side. This concept of semi differentiability shows that a derivative can only exist if the point you are taking the derivative of has a 2 sided limit and the derivative has a 2 sided limit.
+\newline
+\newline
+The next problem to discuss is the derivatives of polynomials. Turns out polynomials' derivatives follow a very specific pattern known as the Power Rule. The power rule can be described as follows: Say we have the polynomial $Ax^a + Bx^b + C$, then $\frac{d}{dx}$ can be described as $(A*a)x^{a-1} + (B*b)x^{b-1}$. 
+\newline
+\newline
+The next thing we will be discussing are derivative rules. First let's start with the constant rule. So, if you paid attention to the previous paragraph you would know that when you take the derivative of a polynomial you drop the constant and it becomes 0. Well that is what the constant rule describes. If we have constant $c$ and we do $\frac{d}{dx} c$ then we get $0$. And that makes quite a bit of sense because the slope a straight horizontal line is 0. The next rule is the sum rule. The sum rule is a bit more complicated. What is says that $\frac{d}{dx} [f(x)+g(x)] = \frac{d}{dx} f(x) + \frac{d}{dx} g(x)$. So, why does this rule make sense? There is also a difference rule which states the same as the sum rule but with subtraction. There is also the constant multiple rule which states the following: $\frac{d}{dx} c*g(x)$ = $c*\frac{d}{dx} g(x)$. 
+\newline
+\newline
+The next rule to discuss is the product rule. Which describes what happens with the following computation: $\frac{d}{dx} f(x) g(x)$.
+\newline
+\newline
+$\frac{d}{dx} f(x) g(x)$ = $lim_{h\to 0} \frac{f(x+h)g(x+h) - f(x)g(x)}{h}$
+\newline
+\newline
+So, how do we simplify this? One way I thought of doing this was by getting it such that we can factor out $f(x+h)$ and $g(x)$. This would separate the 2 terms and intermingle them. So how do we do that. We can do something I call "$0$ manipulation". Below I describe what I did.
+\newline
+\newline
+$\frac{d}{dx} f(x) g(x)$ = $lim_{h\to 0} \frac{f(x+h)g(x+h) - 0 - f(x)g(x)}{h}$
+\newline
+\newline
+$\frac{d}{dx} f(x) g(x)$ = $lim_{h\to 0} \frac{f(x+h)g(x+h) - 0 - f(x)g(x)}{h}$
+\newline
+\newline
+$0 = f(x+h)g(x)-f(x+h)g(x)$
+\newline
+\newline
+$\frac{d}{dx} f(x) g(x)$ = $lim_{h\to 0} \frac{f(x+h)g(x+h) - (f(x+h)g(x)-f(x+h)g(x)) - f(x)g(x)}{h}$
+\newline
+\newline
+$\frac{d}{dx} f(x) g(x)$ = $lim_{h\to 0} \frac{f(x+h)g(x+h) - (f(x+h)g(x)-f(x+h)g(x)) - f(x)g(x)}{h}$
+\newline
+\newline
+$\frac{d}{dx} f(x) g(x)$ = $lim_{h\to 0} \frac{f(x+h)g(x+h) - f(x+h)g(x)+f(x+h)g(x) - f(x)g(x)}{h}$
+\newline
+\newline
+$\frac{d}{dx} f(x) g(x)$ = $lim_{h\to 0} \frac{f(x+h)(g(x+h) - g(x))+g(x)(f(x+h) - f(x))}{h}$
+\newline
+\newline
+$\frac{d}{dx} f(x) g(x)$ = $lim_{h\to 0} \frac{f(x+h)(g(x+h) - g(x))}{h}   +lim_{h\to 0}\frac{g(x)(f(x+h) - f(x))}{h}$
+\newline
+\newline
+$\frac{d}{dx} f(x) g(x)$ = $lim_{h\to 0} f(x+h) \frac{g(x+h) - g(x)}{h}   +lim_{h\to 0}g(x)\frac{f(x+h) - f(x)}{h}$
+\newline
+\newline
+So, now conveniently we get 2 derivative formulas so we can reduce that to:
+\newline
+\newline
+$\frac{d}{dx} f(x) g(x)$ = $lim_{h\to 0} f(x+h) * lim_{h\to 0}  \frac{g(x+h) - g(x)}{h}   +lim_{h\to 0}g(x) * lim_{h\to 0}\frac{f(x+h) - f(x)}{h}$
+\newline
+\newline
+So, as you can see we have the derivative formulas of both $g$ and $f$ so we can convert to:
+\newline
+\newline
+$\frac{d}{dx} f(x) g(x)$ = $g'(x)f(x) + f'(x)g(x)$
+\newline
+\newline
+The next important rule to know is similar to the product rule. Except it is the quotient rule which basically what happens when you do $\frac{d}{dx}\frac{f(x)}{g(x)}$. So the methodology we will be using is similar to the product rule proof with "$0$ manipulation". Below is the full proof.
+\newline
+\newline
+$\frac{d}{dx}\frac{f(x)}{g(x)} = lim_{h\to 0} \frac{\frac{f(x+h)}{g(x+h)} - \frac{f(x)}{g(x)}}{h}$
+\newline
+\newline
+$\frac{d}{dx}\frac{f(x)}{g(x)} = lim_{h\to 0} \frac{\frac{f(x+h)g(x)}{g(x+h)g(x)} - \frac{f(x)g(x+h)}{g(x)g(x+h)}}{h}$
+\newline
+\newline
+$\frac{d}{dx}\frac{f(x)}{g(x)} = lim_{h\to 0} \frac{\frac{f(x+h)g(x) - f(x)g(x+h)}{g(x+h)g(x)}}{h}$
+\newline
+\newline
+$\frac{d}{dx}\frac{f(x)}{g(x)} = lim_{h\to 0} \frac{f(x+h)g(x) - f(x)g(x+h)}{hg(x+h)g(x)}$
+\newline
+\newline
+Here we start with the $0$ manipulation
+\newline
+\newline
+$\frac{d}{dx}\frac{f(x)}{g(x)} = lim_{h\to 0} \frac{f(x+h)g(x) - 0 - f(x)g(x+h)}{hg(x+h)g(x)}$
+\newline
+\newline
+$0 = f(x+h)g(x+h) - f(x+h)g(x+h)$
+\newline
+\newline
+$\frac{d}{dx}\frac{f(x)}{g(x)} = lim_{h\to 0} \frac{f(x+h)g(x) - (f(x+h)g(x+h) - f(x+h)g(x+h)) - f(x)g(x+h)}{hg(x+h)g(x)}$
+\newline
+\newline
+$\frac{d}{dx}\frac{f(x)}{g(x)} = lim_{h\to 0} \frac{f(x+h)g(x) - f(x+h)g(x+h) + f(x+h)g(x+h) - f(x)g(x+h)}{hg(x+h)g(x)}$
+\newline
+\newline
+$\frac{d}{dx}\frac{f(x)}{g(x)} = lim_{h\to 0} \frac{f(x+h)(g(x) - g(x+h)) + g(x+h)(f(x+h) - f(x))}{hg(x+h)g(x)}$
+\newline
+\newline
+$\frac{d}{dx}\frac{f(x)}{g(x)} = lim_{h\to 0} \frac{-f(x+h)(g(x+h) - g(x)) + g(x+h)(f(x+h) - f(x))}{hg(x+h)g(x)}$
+\newline
+\newline
+$\frac{d}{dx}\frac{f(x)}{g(x)} = lim_{h\to 0} \frac{(g(x+h) - g(x))}{h} * lim_{h\to 0} \frac{-f(x+h)}{g(x+h)g(x)} + lim_{h\to 0} \frac{(f(x+h) - f(x))}{h} * lim_{h\to 0} \frac{g(x+h)}{g(x+h)g(x)}$
+\newline
+\newline
+$\frac{d}{dx}\frac{f(x)}{g(x)} = g'(x) * lim_{h\to 0} \frac{-f(x+h)}{g(x+h)g(x)} + f'(x) * lim_{h\to 0} \frac{g(x+h)}{g(x+h)g(x)}$
+\newline
+\newline
+Now, we solve the limits
+\newline
+\newline
+$\frac{d}{dx}\frac{f(x)}{g(x)} = g'(x) *  \frac{-f(x)}{g(x)^2} + f'(x) * \frac{g(x)}{g(x)^2}$
+\newline
+\newline
+$\frac{d}{dx}\frac{f(x)}{g(x)} = \frac{-f(x)g'(x)}{g(x)^2} + \frac{g(x)f'(x)}{g(x)^2}$
+\newline
+\newline
+$\frac{d}{dx}\frac{f(x)}{g(x)} = \frac{g(x)f'(x)-f(x)g'(x)}{g(x)^2}$
+\newline
+\newline
+And that's the quotient rule proof.
+\newline
+\newline
+The next we will discuss are special derivatives. Namely of $sin(x)$, $cos(x)$, $tan(x)$, their reciprocals, $e^x$, $ln(x)$
+\newline
+\newline
+Lets start with $sin(x)$. In this section we will be taking advantage of trig identities such as $sin(a+b)$ so be sure to remember them!
+\newline
+\newline
+$\frac{d}{dx}sin(x) = lim_{h\to 0} \frac{sin(x+h) - sin(x)}{h}$
+\newline
+\newline
+$\frac{d}{dx}sin(x) = lim_{h\to 0} \frac{sin(x)cos(h) + sin(h)cos(x) - sin(x)}{h}$
+\newline
+\newline
+$\frac{d}{dx}sin(x) = lim_{h\to 0} \frac{sin(x)cos(h) + sin(h)cos(x) - sin(x)}{h}$
+\newline
+\newline
+$\frac{d}{dx}sin(x) = lim_{h\to 0} \frac{sin(x)cos(h) -sin(x)  + sin(h)cos(x) }{h}$
+\newline
+\newline
+$\frac{d}{dx}sin(x) = lim_{h\to 0} \frac{sin(x)(cos(h) - 1)  + sin(h)cos(x) }{h}$
+\newline
+\newline
+$\frac{d}{dx}sin(x) = lim_{h\to 0} \frac{sin(x)(cos(h) - 1)}{h}  + lim_{h\to 0}\frac{sin(h)cos(x)}{h}$
+\newline
+\newline
+$\frac{d}{dx}sin(x) = sin(x) * lim_{h\to 0}  \frac{(cos(h) - 1)}{h}  + cos(x) * lim_{h\to 0}\frac{sin(h)}{h}$
+\newline
+\newline
+$\frac{d}{dx}sin(x) = sin(x) * 0 + cos(x) * 1$
+\newline
+\newline
+$\frac{d}{dx}sin(x) = cos(x)$
+\newline
+\newline
+The next thing to solve is the derivative $cos(x)$. This is extremely similar to the $sin(x)$ proof by taking advantage of identities
+\newline
+\newline
+$\frac{d}{dx} sin(x) =  lim_{h\to 0}\frac{cos(x+h) - cos(x)}{h}$
+\newline
+\newline
+$\frac{d}{dx} sin(x) =  lim_{h\to 0}\frac{cos(x+h) - cos(x)}{h}$
+\newline
+\newline
+$\frac{d}{dx} sin(x) =  lim_{h\to 0}\frac{cos(x)cos(h)- sin(x)sin(h) - cos(x)}{h}$
+\newline
+\newline
+$\frac{d}{dx} sin(x) =  lim_{h\to 0}\frac{cos(x)cos(h) - cos(x) - sin(x)sin(h)}{h}$
+\newline
+\newline
+$\frac{d}{dx} sin(x) =  lim_{h\to 0}\frac{cos(x)(cos(h) - 1) - sin(x)sin(h)}{h}$
+\newline
+\newline
+$\frac{d}{dx} sin(x) = lim_{h\to 0} \frac{cos(x)(cos(h) - 1)}{h} - lim_{h\to 0}\frac{ sin(x)sin(h)}{h}$
+\newline
+\newline
+$\frac{d}{dx} sin(x) =  lim_{h\to 0}\frac{cos(x)(cos(h) - 1)}{h} - lim_{h\to 0}\frac{ sin(x)sin(h)}{h}$
+\newline
+\newline
+$\frac{d}{dx} sin(x) =  cos(x)*lim_{h\to 0}\frac{(cos(h) - 1)}{h} - sin(x)*lim_{h\to 0}\frac{sin(h)}{h}$
+\newline
+\newline
+$\frac{d}{dx} sin(x) =  cos(x)*0- sin(x)*1$
+\newline
+\newline
+$\frac{d}{dx} sin(x) =  - sin(x)$
+\newline
+\newline
+The next proof is for $e^x$. Now this piece of living trash is a pain to prove for a multitude of reasons. In addition, it is also perhaps the most intriguing of them all because of the outcome.
+\newline
+\newline
+So, the proof starts out quite normal
+\newline
+\newline
+$\frac{d}{dx}e^x = lim_{h\to 0}\frac{e^{x+h} - e^x}{h}$
+\newline
+\newline
+$\frac{d}{dx}e^x = lim_{h\to 0}\frac{e^{x+h} - e^x}{h}$
+\newline
+\newline
+$\frac{d}{dx}e^x = lim_{h\to 0}\frac{e^x * e^h - e^x}{h}$
+\newline
+\newline
+$\frac{d}{dx}e^x = lim_{h\to 0}\frac{e^x(e^h - 1)}{h}$
+\newline
+\newline
+$\frac{d}{dx}e^x = e^xlim_{h\to 0}\frac{e^h - 1}{h}$
+\newline
+\newline
+We are faced with an interesting dilemma now. How do we solve $lim_{h\to 0}\frac{e^h - 1}{h}$. With current methods it is impossible to solve this. So, we will use graphs. Below I listed the graph of $\frac{e^x - 1}{x}$ on the domain $[-10,1]$
+\newline
+\newline
+\begin{center}
+        $
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = center,
+    xlabel = $x$,
+    ylabel = {$f(x)$},
+    ymin=-10,
+    ymax=2,
+    trig format plots=rad
+]
+%Below the red parabola is defined
+\addplot [
+    domain=-10:1, 
+    samples=100, 
+    color=black
+]
+{(2.71^x-1)/x};
+\end{axis}
+\end{tikzpicture}
+  $  
+\end{center}
+Evidently, the graph tends to approach $1$ as we get close to $x=0$. So, interestingly, the derivative of $e^x$ is in fact $e^x$. This represents one of $e$'s many intriguing qualities. 
+\newline
+\newline
+Now that we have finished the $e$ proof, I want to go on a slight tangent and talk about exponentials and their derivatives. Exponentials provide an interesting problem for us because their derivative pattern follows the same pattern as the $e^x$ proof - it eventually lands up at some seemingly impossible expression. Lets take a look at $2^x$.
+\newline
+\newline
+$\frac{d}{dx}2^x = lim_{h\to 0}\frac{2^{x+h} - 2^x}{h}$
+\newline
+\newline
+$\frac{d}{dx}2^x = lim_{h\to 0}\frac{2^{x+h} - 2^x}{h}$
+\newline
+\newline
+$\frac{d}{dx}2^x = lim_{h\to 0}\frac{2^x * 2^h - 2^x}{h}$
+\newline
+\newline
+$\frac{d}{dx}2^x = lim_{h\to 0}\frac{2^x(2^h - 1)}{h}$
+\newline
+\newline
+$\frac{d}{dx}2^x = 2^xlim_{h\to 0}\frac{2^h - 1}{h}$
+\newline
+\newline
+So, what do we do with this seemingly impossible expression. Well, lets take a look at the limit. As we said closer to the beginning of the paper a limit simply approaches the number but never touches, similar to an asymptote. So, what if we plugged in a number that approaches $0$ such as say $0.00000001$. That gives us the expression $\frac{2^{0.00000001} - 1}{0.00000001}$. This expression evaluates $0.69314718$. This may seem like some seemingly random number but it is in fact a very special number: $ln(2)$. So, the derivative of $2^x$ is in fact $ln(2)*2^x$. So, the derivative for exponentials can be generalized all the way down to Assume k represents the base of an exponent and f(x) is the function $\frac{d}{dx} f(x) = ln(k)*k^x$. That would also explain why $e^x$'s derivative is itself because $ln(e) = 1$.
+\newline
+\newline
+So this begs the question, how did $e$/$ln$ suddenly jump in here is the main question to be asking? The answer to that is because it does. There is no clear answer to this. $e$ just happens to pop up in a lot of places. *This section will be updated as new things are found and new questions are asked*.
+\newline
+\newline
+The next thing to discuss is the derivative of the inverse of $e^x$ which is in fact $ln(x)$. But, before we discuss that, I want to discuss something known as the Chain Rule which describes what exactly happens when you take the derivative of $f(g(x))$. First I put the non-rigorous proof and then I added the rigorous proof.
+\newline
+\newline
+So, what are we aiming for exactly? Well we are aiming for $\frac{f(g(x+h)) - f(g(x))}{h}$. 
+\newline
+\newline
+We can solve get to that aim with a relatively simple expression: $lim_{h \to 0} \frac{f(g(x+h)) - f(g(x))}{g(x+h)-g(x)} * \frac{g(x+h)-g(x)}{h}$ assuming that both $f$ and $g$ are differentiable at $x$. This results in the chain rule as we know it which is $f'(g(x)) * g(x)$.
+\newline
+\newline
+Author's Note: when we take the function $f(g(x))$ the derivative represents $\frac{d}{dx}$ but when we attempt to get $f'$ we are really solving for $\frac{df}{dg}$. This proof, unfortunately, is not perfect. In a perfect world there would be no assumption making. 
+\newline
+\newline
+Okay, lets go into $ln(x)$. $ln(x)$'s proof is super easy. It involves the chain rule.
+\newline
+\newline
+So, we start with $y = ln(x)$ and using logarithm logic we get the simple expression of $e^y = x$. Pretty simple. So, we can substitute that with $ln(e^y) = y$ which makes sense. Now we can take the derivative fairly easily. So, $\frac{d}{dy} ln(e^y)$ or $\frac{d}{dy} ln(x)$. Note: $dy$ makes sense because the variables is $y$ not $x$. Let's solve.
+\newline
+\newline
+$\frac{d}{dy} y = \frac{d}{dy} ln(e^y)$
+\newline
+\newline
+Chain rule applied here
+\newline
+$1 = \frac{d}{dy} ln(e^y) = \frac{d}{dy} e^y * \frac{d}{dx} ln(x)$
+\newline
+\newline
+$1  = \frac{d}{dy} e^y * \frac{d}{dx} ln(x)$
+\newline
+\newline
+$1  = e^{ln(x)} * \frac{d}{dx} ln(x)$
+\newline
+\newline
+$1  = x * \frac{d}{dx} ln(x)$
+\newline
+\newline
+$\frac{1}{x}  = \frac{d}{dx} ln(x)$
+\newline
+\newline
+So, now we are done with that the last derivatives we need to prove are $tan(x)$ and all the inverse trig functions. I will not be proving these because I have provided you all the tools you need to prove them on your own. However, I have listed them below for your reference.
+\newline
+\newline
+$\frac{d}{dx} tan(x) = sec^2(x)$
+\newline
+$\frac{d}{dx} cot(x) = -csc^2(x)$
+\newline
+$\frac{d}{dx} sec(x) = tan(x)sec(x)$
+\newline
+$\frac{d}{dx} csc(x) = -cot(x)csc(x)$
+\newpage
+\begin{center}
+    \section{Unit 3: More Differentiation}
+\end{center}
+So, firstly we are going to start with a differentiation technique which is known as Implicit Differentiation. Implicit differentiation is when we attempt to take the derivative of something that is not written in the form of $f(x) = $. So, for example this will teach how to take the derivative of $x^2+y^2=25$ without converting it to $y =  \pm \sqrt{25-x^2}$
+\newline
+\newline
+So, in order to solve an equation such as $x^2+y^2=25$. So, in order to solve this function we are evidently going to have to take the derivative of both sides or apply $\frac{d}{dx}$. So, one question to answer is why is this a valid argument to apply because when you take the derivative you end with 2 sides that are not equivalent ($f(x) \neq f'(x)$). However, that is in fact not the case because $y$ is inherently a representation of the function in its explicit function ($f(x) =$ form). So, that is why it is implicit: because it is a representation of the function just not in its explicit function form. So, lets take the derivative of both sides
+\newline
+\newline
+$\frac{d}{dx} x^2+y^2=\frac{d}{dx}25$
+\newline
+We know the derivative of a constant is $0$ because of chain rule.
+\newline
+$\frac{d}{dx} x^2+\frac{d}{dx}y^2=0$
+\newline
+So, the derivative of $x^2$ is quite simplistic due to power rule. It ends up as $2x$. However, what do we do about $y^2$. Well, here we can use the recently learned chain rule. So, the chain rule says for any given function in a function we can use the following expression: $\frac{du}{dy}\frac{dy}{dx}$. We can manipulate $y$ in such a way: $u = y$. What is special about this expression? Well, it is that that same equation is the same as the expression $u(y)$ or $u(f(x))$. So, now it is quite easy. Remember the chain rule is a product of the derivative of the outer function (Which has an input of the smaller function) and the derivative of the inner function.
+\newline
+$2x+\frac{du}{dy}y^2\frac{dy}{dx}=0$
+\newline
+In this case the $f(x)$ part is actually \textit{implied} because instead of saying $f(x)$ you are saying $y$ which not a function but a variable. Another way to think about it is that we can't differentiate $y$ with $\frac{dy}{dx}$ so we must rely on a level of the composition functions (By levels I mean that in say $f(g(h(x)))$ all of those functions are in each other and those are levels). However, there is nothing to differentiate on the lower levels. So, we have to leave like that. If you want hard proof that this works I recommend you differentiate a function that can easily be converted to explicit form such as $y-x=3$ and when you get to $\frac{du}{dy}y\frac{dy}{dx}$ replace $\frac{dy}{dx}$ with the differentiated form of the explicit function.
+\newline
+$2x+2y\frac{dy}{dx}=0$.
+\newline
+\newline
+$2y\frac{dy}{dx}=-2x$.
+\newline
+\newline
+$y\frac{dy}{dx}=-x$.
+\newline
+\newline
+$\frac{dy}{dx}=\frac{-x}{y}$.
+\newline
+\newline
+I listed another example below:
+\newline
+\newline
+$f(x) = 3(g(t))^2$
+\newline
+\newline
+$f(x) = 3(g(x))^2$
+\newline
+\newline
+$\frac{df}{dx} = \frac{d}{dx}3(g(x))^2$
+\newline
+\newline
+The next topic we will be discussing is taking the derivative of an inverse function. This does present an interesting topic in the realm of proof making. So, intuitively, the inverse of a function can be noted down as simply $\frac{dx}{dy}$ simply for the fact that with an inverse function you are switching the places of the x and y which are you replicating on the derivative function. This would mean intuitively and logically the derivative of an inverse should be $\frac{1}{\frac{dy}{dx}}$ - Right? No. This assertion, unfortunately, is wrong. Although it works on things such as $x^2$ it does not work on rational functions such as $\frac{x+3}{x+2}$. So, we need to do a another proof. 
+\newline
+\newline
+To do this proof, we will capitalize of a between inverse and parent functions which is following: $f^{-1}(f(x)) = x$. From here we can apply the chain rule along with implicit differentiation in order to create the relation we want.
+\newline
+\newline
+So, we can start with implicit differentiation
+\newline
+\newline
+$\frac{d}{dx}f(f^{-1}(x)) = \frac{d}{dx}x$
+\newline
+\newline
+$\frac{d}{dx}f(f^{-1}(x)) = 1$
+\newline
+\newline
+$f'(f^{-1}(x))*f'^{-1}(x) = 1$
+\newline
+\newline
+$ \frac{d}{dx}f^{-1}(x) = \frac{1}{f'(f^{-1}(x))}$
+\newline
+\newline
+That's it. Next, now that we have proved how to take the inverse we next have to prove all the inverse trig functions. Let's start with $arcsin$ or $sin^{-1}$
+\newline
+\newline
+So I'm going to spare the math and skip to the solution. So, we get $\frac{1}{cos(arcsin(x))}$. This may seem like the end, but........ we can go further. If you paid attention in Pre-calculus you should know that this in fact is a relationship you learned and should understand. Anyway, lets do a recap. What is the output of $sin^{-1}(x)$ output? Well, it outputs the angle that we inputed into $sin$. So, we can reinout into $tan$ and get a new value. So, in this particular scenario, we have $sin^{-1}(x)$ or $sin^{-1}(\frac{x}{1})$ (Note: inside of the $sin^{-1}$ is the ratio inputed so we can use that ratio to generate the triangle). This means that the hypotenuse is $1$ and the opposite is $x$. So, the adjacent is $\sqrt{1-x^2}$ so the derivative of $arcsin$ is $\frac{1}{\sqrt{1-x^2}}$. So, with this information you will be able to solve $arccos$ and $arctan$. However, I want to talk about the reciprocal functions. You will find cotangent to quite standard however the last 2 - cosecant and secant - provide an interesting dilemma. Lets start with cosecant.
+\newline
+\newline
+Author's Note: With the compoisition of inverse and normal basically you input the ratio. So, $arcsin(x)$ is really just $sin(y) = x$ and that allows you to use the ratio coming from x to your advantage and create a triangle with it.
+\newline
+\newline
+So, if we look at the derivative of $cosecant$ we quickly realize that we have a problem because the  derivative has 2 elements instead of one or, specifically, the derivative is $-cot(x)csc(x)$. This provides a interesting problem because when we plug in $arccsc(x)$ we get $-cot(arccsc(x))csc(arccsc(x))$. This then simplifies to $x\sqrt{x^2-1}$. However, there is one miniscule problem. The product of $cot(x)csc(x)$ is never actually negative to to make sure that stays true and doesn't produce dubious results we have to do absolute value $x$ making the derivative of $arccsc(x)$ $\frac{1}{|x|\sqrt{x^2-1}}$. A similar process can be done for $arcsec$. Remember, with the inverse trig functions the signage is extremely important. Make sure that the all the products work how they are supposed to and they output the correct answer with the correct sign. The reason we added the absolute value is so that it follows the proper pattern.
+\newline
+\newline
+Below I listed all of the derivatives of all the inverse functions are a sort of cheat sheet
+\newline
+\newline
+CHEAT SHEET HERE
+\newline
+\newline
+The next topic is higher order derivatives such as second derivatives. These are really easy. They are derivatives of derivatives. So, just take the derivative of a derivative. The notation is also quite easy. Suppose you have $f(x)$ the first derivative is $f'(x)$ and the second derivative is $f''(x)$ and so on. In addition, they can be written as $\frac{d^2}{d^2x}$ because a second derivative is literally just $\frac{d}{dx} * \frac{d}{dx}$
+\newline
+\newline
+The next thing I want to discuss is using the derivative in context. As we said at the beginning of the paper one of the uses of the derivative in context is velocity ($\frac{\text{Distance}}{\text{Time}}$). This same technique can be used to find other rates of change at an instantaneous level. Below I described some problems and I solve them using the same technique we used to solve the velocity problem. This concept is known as related rates.
+\newline
+\newline
+So, as I stated above, a derivative is simply a rate of change (Look at velocity). So, in related rates we simply compare 2 rates of change and connect them. Lets take a look at the following problem:
+\newline
+Air is being pumped into a spherical balloon at a rate of 5 $\frac{\text{cm}^3}{min}$. Determine the rate at which the radius of the balloon is increasing when the diameter of the balloon is 20 cm.
+\newline
+\newline
+So, we are attempting to compare the rate of increasing volume to the rate of increasing diameter. And if you know the formulas, it should be clear that these to rates are related and affect each other. So, we can easily make the first assertion $V(r) = \frac{4}{3}\pi r^3$. However, we don't want this, we ant to relate this to time (Instead of $V(r)$ we want $V(t)$). So, how is that possible? Well, we know that the radius is also related to time. So, what if we are able to establish a function $r(t)$ which describes the radius at a point in time. So, now, instead of $V(r) = \frac{4}{3}\pi r^3$ we have a more meaningful $V(t) = \frac{4}{3}\pi r(t)^3$. And since we are looking for rates of change of these functions we must take the derivative. And since the problem requests the answer as the radius' rate of change, we are looking for the $r'$ or  $\frac{dr}{dt}$. So, now we have it set up we can use implicit differentation to solve this.
+\newline
+\newline
+$V(t) = \frac{4}{3}\pi r(t)^3$
+\newline
+\newline
+$\frac{d}{dt}V(t) = \frac{d}{dt}\frac{4}{3}\pi r(t)^3$
+\newline
+\newline
+$\frac{dV}{dt} = \frac{4}{3}\pi\frac{d}{dt} r(t)^3$
+\newline
+\newline
+$\frac{dV}{dt} = \frac{4}{3}\pi\frac{d}{dt} r(t)^3$
+\newline
+\newline
+$\frac{dV}{dt} = \frac{4}{3}\pi\frac{dr(t)^3}{dr(t)} r(t)^3 * \frac{dr(t)}{dt}$
+\newline
+\newline
+$\frac{dV}{dt} = \frac{4}{3}\pi\frac{dr(t)^3}{dr(t)} r(t)^3 * \frac{dr(t)}{dt}$
+\newline
+\newline
+$\frac{dV}{dt} = 4\pi r(t)^2 * \frac{dr(t)}{dt}$
+\newline
+\newline
+$\frac{dV}{dt} * \frac{1}{4\pi r(t)^2}  =  \frac{dr(t)}{dt}$
+\newline
+\newline
+And, we know the rate of change for the volume is $5$ so we plug that in.
+\newline
+\newline
+$5 * \frac{1}{4\pi r(t)^2}  =  \frac{dr(t)}{dt}$
+\newline
+\newline
+$\frac{1}{80\pi} \text{cm per minute} =  \frac{dr(t)}{dt}$
+\newline
+\newline
+Thanks to: http://tutorial.math.lamar.edu/Classes/CalcI/RelatedRates.aspx for the problem
+\newline
+\newline
+Now before we move on I want to discuss what I did on step 4. What I did was that I applied the chain rule and the 2 functions can be thought of as $f(x) = x^3$ and the second function is $r(t)$ which results in $f(r(t))$. This technique can be applied to pretty much anything that has something added, multiplied, etc.
+\newline
+\newline
+A 15 foot ladder is resting against the wall. The bottom is initially 10 feet away from the wall and is being pushed towards the wall at a rate of $\frac{1}{4}\frac{\text{ft.}}{\text{sec}}$. How fast is the top of the ladder moving up the wall 12 seconds after we start pushing?
+\newline
+\newline
+So, if we take the triangle then the hypotenuse is $15$. Using this information we can form the following equation: $x^2+y^2=225$.
+\newline
+\newline
+Now, in the previous question we made $r$ in terms of $t$ or time. We can do that here, however it is slightly hard. It is obvious that $x$ and $t$ are intrinsically related because $x$ moves based on $t$ and the question makes it clear that $y$ also moves based on $t$. So, we can do it like this $x = f(t)$ and $y = g(t)$ with $f$ and $g$ being 2 arbitrary functions that represent some transformation of $t$ that outputs what the current y value is. Using this information we can now apply the chain rule very easily.
+\newline
+\newline
+$\frac{d}{dt}f(t)^2+\frac{d}{dt}g(t)^2=\frac{d}{dt}225$.
+\newline
+\newline
+$\frac{dx}{df}f(t)^2\frac{df}{dt}+\frac{dx}{dg}g(t)^2\frac{dg}{dt}=0$.
+\newline
+\newline
+$\frac{dx}{df}f(t)^2\frac{df}{dt}+\frac{dx}{dg}g(t)^2\frac{dg}{dt}=0$.
+\newline
+\newline
+$2f(t)\frac{df}{dt}+2g(t)\frac{dg}{dt}=0$.
+\newline
+\newline
+$2f(t)f'(t)+2g(t)g'(t)=0$.
+\newline
+\newline
+$2xx'+2yy'=0$.
+\newline
+\newline
+As you can see, the problem is asking for the rate of change of $y$. And because derivatives are rates of change, we are looking to isolate $y'$. So, we know that $x' = \frac{-1}{4}$. And we can figure out $x$ by subtracting $10-\frac{-1}{4}12$ which is how much it has retracted since 12 seconds. This is $7$. We can plug this all into the equation.
+\newline
+\newline
+$2*7\frac{-1}{4}+2yy'=0$
+\newline
+\newline
+$-\frac{7}{2}+2yy'=0$
+\newline
+\newline
+Using the fact that we know that the $x$ value of the triangle is $7$ after $12$ seconds we can then calculate the $y$ after $12$ seconds because it is a right triangle.
+\newline
+\newline
+$225-49 = y^2$
+\newline
+\newline
+$176 = y^2$
+\newline
+\newline
+$\sqrt{176} = y$
+\newline
+\newline
+$-\frac{7}{2}+2\sqrt{176}y'=0$
+\newline
+\newline
+$-\frac{7}{2}=-2\sqrt{176}y'$
+\newline
+\newline
+$\frac{-\frac{7}{2}}{-2\sqrt{176}} = y'$
+\newline
+\newline
+$y' = \frac{7}{4\sqrt{176}}$
+\newline
+\newline
+And, thats our answer.
+\newline
+\newline
+Credit for problem: http://tutorial.math.lamar.edu/Classes/CalcI/RelatedRates.aspx
+\end{document}      
